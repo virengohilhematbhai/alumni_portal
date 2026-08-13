@@ -34,7 +34,7 @@ const INITIAL_GALLERY: GalleryItem[] = [
     id: 'gal-2',
     imageUrl: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80',
     category: 'Convocation',
-    aspectRatio: 'portrait',
+    aspectRatio: 'landscape',
   },
   {
     id: 'gal-3',
@@ -46,13 +46,13 @@ const INITIAL_GALLERY: GalleryItem[] = [
     id: 'gal-4',
     imageUrl: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=80',
     category: 'Events',
-    aspectRatio: 'square',
+    aspectRatio: 'landscape',
   },
   {
     id: 'gal-5',
     imageUrl: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80',
     category: 'Workshops',
-    aspectRatio: 'portrait',
+    aspectRatio: 'landscape',
   },
   {
     id: 'gal-6',
@@ -64,7 +64,7 @@ const INITIAL_GALLERY: GalleryItem[] = [
     id: 'gal-7',
     imageUrl: 'https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=1200&q=80',
     category: 'Campus Life',
-    aspectRatio: 'portrait',
+    aspectRatio: 'landscape',
   },
   {
     id: 'gal-8',
@@ -76,7 +76,7 @@ const INITIAL_GALLERY: GalleryItem[] = [
     id: 'gal-9',
     imageUrl: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1200&q=80',
     category: 'Reunions',
-    aspectRatio: 'square',
+    aspectRatio: 'landscape',
   },
 ];
 
@@ -84,7 +84,7 @@ export default function GalleryPage() {
   const [items, setItems] = useState<GalleryItem[]>(INITIAL_GALLERY);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [layoutMode, setLayoutMode] = useState<'masonry' | 'grid3' | 'grid4'>('masonry');
+  const [layoutMode, setLayoutMode] = useState<'masonry' | 'grid3' | 'grid4'>('grid3');
   const [activeLightboxIndex, setActiveLightboxIndex] = useState<number | null>(null);
 
   // Fetch uploaded gallery items from Backend API
@@ -102,7 +102,7 @@ export default function GalleryPage() {
               id: g.id || g._id || `api-${index}`,
               category: (g.category as any) || 'Campus Life',
               imageUrl: g.imageUrl,
-              aspectRatio: index % 3 === 1 ? 'portrait' : index % 3 === 2 ? 'square' : 'landscape',
+              aspectRatio: 'landscape',
             }));
             const apiImageUrls = new Set(formattedApiItems.map((item) => item.imageUrl));
             const filteredInitial = INITIAL_GALLERY.filter((item) => !apiImageUrls.has(item.imageUrl));
@@ -178,7 +178,7 @@ export default function GalleryPage() {
         <section id="gallery-grid-section" className="max-w-7xl mx-auto px-4 sm:px-6 mt-10 lg:px-8 pb-16 flex-1 w-full">
           {/* GALLERY PHOTO GRID */}
           {filteredItems.length === 0 ? (
-            <div className="py-20 text-center  flex flex-col items-center justify-center bg-white rounded-3xl border border-slate-200 border-dashed my-8 shadow-xs">
+            <div className="py-20 text-center flex flex-col items-center justify-center bg-white rounded-3xl border border-slate-200 border-dashed my-8 shadow-xs">
               <Filter className="w-12 h-12 text-slate-300 mb-4 animate-bounce" />
               <h3 className="text-xl font-bold text-slate-900">No memories found</h3>
               <p className="text-slate-500 text-sm mt-1 max-w-md">
@@ -198,7 +198,7 @@ export default function GalleryPage() {
             <div
               className={
                 layoutMode === 'masonry'
-                  ? 'columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4'
+                  ? 'columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6'
                   : layoutMode === 'grid3'
                     ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
                     : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'
@@ -209,19 +209,14 @@ export default function GalleryPage() {
                   <div
                     key={item.id}
                     onClick={() => setActiveLightboxIndex(index)}
-                    className="group relative overflow-hidden rounded-2xl bg-white border border-slate-200/90 hover:border-red-500 shadow-xs hover:shadow-2xl hover:shadow-red-500/15 transition-all duration-500 cursor-pointer break-inside-avoid"
+                    className="group relative overflow-hidden rounded-3xl bg-white border border-slate-200/90 hover:border-red-500 shadow-md hover:shadow-2xl hover:shadow-red-500/15 transition-all duration-500 cursor-pointer break-inside-avoid"
                   >
-                    {/* Image Container (Image Only) */}
-                    <div className="relative overflow-hidden w-full bg-slate-100">
+                    {/* Image Container (Horizontal Landscape Fill) */}
+                    <div className="relative overflow-hidden w-full bg-slate-100 rounded-3xl aspect-[16/10]">
                       <img
                         src={item.imageUrl}
                         alt={`Campus photo ${item.id}`}
-                        className={`w-full object-cover transition-transform duration-700 group-hover:scale-105 ${item.aspectRatio === 'portrait'
-                          ? 'h-80 sm:h-96'
-                          : item.aspectRatio === 'square'
-                            ? 'h-64 sm:h-72'
-                            : 'h-52 sm:h-60'
-                          }`}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 rounded-3xl"
                         loading="lazy"
                       />
                     </div>
