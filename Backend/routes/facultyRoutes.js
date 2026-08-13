@@ -15,7 +15,10 @@ const {
 } = require('../controllers/admin');
 const { protect, facultyOrAdmin } = require('../middleware/authMiddleware');
 
-// All faculty routes require JWT protection + faculty/admin privileges
+// Public Gallery GET API (Accessible by all users and main gallery page)
+router.get('/gallery', getGalleryAdmin);
+
+// All other faculty routes require JWT protection + faculty/admin privileges
 router.use(protect, facultyOrAdmin);
 
 // Faculty Members API
@@ -30,8 +33,7 @@ router.post('/events', createEvent);
 router.put('/events/:id', updateEvent);
 router.delete('/events/:id', deleteEvent);
 
-// Faculty Gallery API
-router.get('/gallery', getGalleryAdmin);
+// Faculty Gallery API (Write / Delete operations)
 router.post('/gallery', createGalleryItem);
 router.delete('/gallery/:id', deleteGalleryItem);
 
