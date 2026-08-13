@@ -84,7 +84,7 @@ export default function GalleryPage() {
   const [items, setItems] = useState<GalleryItem[]>(INITIAL_GALLERY);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [layoutMode, setLayoutMode] = useState<'masonry' | 'grid3' | 'grid4'>('grid3');
+  const [layoutMode, setLayoutMode] = useState<'masonry' | 'grid3' | 'grid4'>('masonry');
   const [activeLightboxIndex, setActiveLightboxIndex] = useState<number | null>(null);
 
   // Fetch uploaded gallery items from Backend API
@@ -176,7 +176,7 @@ export default function GalleryPage() {
 
         {/* Main Photo Stream Section */}
         <section id="gallery-grid-section" className="max-w-7xl mx-auto px-4 sm:px-6 mt-10 lg:px-8 pb-16 flex-1 w-full">
-          {/* GALLERY PHOTO GRID */}
+          {/* GALLERY PHOTO GRID (HORIZONTAL MASONRY WITH WIDE LANDSCAPE FEATURE CARDS) */}
           {filteredItems.length === 0 ? (
             <div className="py-20 text-center flex flex-col items-center justify-center bg-white rounded-3xl border border-slate-200 border-dashed my-8 shadow-xs">
               <Filter className="w-12 h-12 text-slate-300 mb-4 animate-bounce" />
@@ -195,24 +195,25 @@ export default function GalleryPage() {
               </button>
             </div>
           ) : (
-            <div
-              className={
-                layoutMode === 'masonry'
-                  ? 'columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6'
-                  : layoutMode === 'grid3'
-                    ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
-                    : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'
-              }
-            >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredItems.map((item, index) => {
+                // Every 4th item spans 2 columns horizontally as a wide landscape feature card!
+                const isWideHorizontal = index % 4 === 1;
+
                 return (
                   <div
                     key={item.id}
                     onClick={() => setActiveLightboxIndex(index)}
-                    className="group relative overflow-hidden rounded-3xl bg-white border border-slate-200/90 hover:border-red-500 shadow-md hover:shadow-2xl hover:shadow-red-500/15 transition-all duration-500 cursor-pointer break-inside-avoid"
+                    className={`group relative overflow-hidden rounded-3xl bg-white border border-slate-200/90 hover:border-red-500 shadow-md hover:shadow-2xl hover:shadow-red-500/15 transition-all duration-500 cursor-pointer ${
+                      isWideHorizontal ? 'sm:col-span-2 lg:col-span-2' : ''
+                    }`}
                   >
-                    {/* Image Container (Horizontal Landscape Fill) */}
-                    <div className="relative overflow-hidden w-full bg-slate-100 rounded-3xl aspect-[16/10]">
+                    {/* Horizontal Landscape Image Container */}
+                    <div
+                      className={`relative overflow-hidden w-full bg-slate-100 rounded-3xl ${
+                        isWideHorizontal ? 'aspect-[21/9] sm:aspect-[2/1]' : 'aspect-[16/10]'
+                      }`}
+                    >
                       <img
                         src={item.imageUrl}
                         alt={`Campus photo ${item.id}`}
