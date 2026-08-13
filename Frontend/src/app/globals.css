@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+/* Custom sleek scrollbars styling across light & dark mode */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffffff;
+  border-radius: 9999px;
+
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #ff0000cc transparent;
+}
+
