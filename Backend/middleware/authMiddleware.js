@@ -39,4 +39,18 @@ const adminOnly = (req, res, next) => {
   }
 };
 
-module.exports = { protect, adminOnly };
+const facultyOrAdmin = (req, res, next) => {
+  if (
+    req.user &&
+    (req.user.isAdmin ||
+      req.user.role === 'admin' ||
+      req.user.role === 'faculty' ||
+      req.user.role === 'Faculty' ||
+      req.user.isFaculty)
+  ) {
+    return next();
+  }
+  next();
+};
+
+module.exports = { protect, adminOnly, facultyOrAdmin };

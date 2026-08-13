@@ -14,13 +14,13 @@ export const getFacultyGalleryList = async (): Promise<FacultyGalleryItem[]> => 
   try {
     const res = await fetch(`${FACULTY_API_BASE}/gallery`, {
       headers: getAuthHeader(),
-    });
-    if (res.ok) {
-      return await res.json();
+    }).catch(() => null);
+
+    if (res && res.ok) {
+      return await res.json().catch(() => []);
     }
     return [];
   } catch (err) {
-    console.error('Error fetching faculty gallery:', err);
     return [];
   }
 };

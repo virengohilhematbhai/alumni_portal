@@ -18,7 +18,7 @@ const { protect, facultyOrAdmin } = require('../middleware/authMiddleware');
 // Public Gallery GET API (Accessible by all users and main gallery page)
 router.get('/gallery', getGalleryAdmin);
 
-// All other faculty routes require JWT protection + faculty/admin privileges
+// All faculty routes require JWT protection + faculty/admin privileges
 router.use(protect, facultyOrAdmin);
 
 // Faculty Members API
