@@ -24,10 +24,61 @@ interface GalleryItem {
 }
 
 const INITIAL_GALLERY: GalleryItem[] = [
-
+  {
+    id: 'gal-1',
+    imageUrl: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80',
+    category: 'Campus Life',
+    aspectRatio: 'landscape',
+  },
+  {
+    id: 'gal-2',
+    imageUrl: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80',
+    category: 'Convocation',
+    aspectRatio: 'portrait',
+  },
+  {
+    id: 'gal-3',
+    imageUrl: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1200&q=80',
+    category: 'Reunions',
+    aspectRatio: 'landscape',
+  },
+  {
+    id: 'gal-4',
+    imageUrl: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=80',
+    category: 'Events',
+    aspectRatio: 'square',
+  },
+  {
+    id: 'gal-5',
+    imageUrl: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80',
+    category: 'Workshops',
+    aspectRatio: 'portrait',
+  },
+  {
+    id: 'gal-6',
+    imageUrl: 'https://images.unsplash.com/photo-1531545514256-b1400bc00f31?auto=format&fit=crop&w=1200&q=80',
+    category: 'Achievements',
+    aspectRatio: 'landscape',
+  },
+  {
+    id: 'gal-7',
+    imageUrl: 'https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=1200&q=80',
+    category: 'Campus Life',
+    aspectRatio: 'portrait',
+  },
+  {
+    id: 'gal-8',
+    imageUrl: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1200&q=80',
+    category: 'Workshops',
+    aspectRatio: 'landscape',
+  },
+  {
+    id: 'gal-9',
+    imageUrl: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1200&q=80',
+    category: 'Reunions',
+    aspectRatio: 'square',
+  },
 ];
-
-
 
 export default function GalleryPage() {
   const [items, setItems] = useState<GalleryItem[]>(INITIAL_GALLERY);
@@ -51,7 +102,7 @@ export default function GalleryPage() {
               id: g.id || g._id || `api-${index}`,
               category: (g.category as any) || 'Campus Life',
               imageUrl: g.imageUrl,
-              aspectRatio: index % 3 === 0 ? 'landscape' : index % 2 === 0 ? 'portrait' : 'square',
+              aspectRatio: index % 3 === 1 ? 'portrait' : index % 3 === 2 ? 'square' : 'landscape',
             }));
             const apiImageUrls = new Set(formattedApiItems.map((item) => item.imageUrl));
             const filteredInitial = INITIAL_GALLERY.filter((item) => !apiImageUrls.has(item.imageUrl));
